@@ -39,7 +39,7 @@ $(document).ready(function(){
 								var average = rejson.gd:rating.@average;
 								var link = rejson.link[1].@href;
 
-								var posX;
+								var pos;
 								if(average < 1)
 									pos = 0;
 								else if(average >=1 && average < 2)
