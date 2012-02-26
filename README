@@ -1,0 +1,9 @@
+Just another userscript
+
+--用于amazon.cn
+--仅在图书部分发动 
+--少数图书在豆瓣没有收录 
+--部分图书的附属为音像制品，所以也没有评分
+--Chrome16, firefox v9.0测试ok
+
+http://userscripts.org/scripts/review/126632 
