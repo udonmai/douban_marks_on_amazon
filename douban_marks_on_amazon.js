@@ -1,76 +1,67 @@
 // ==UserScript==
-// @name		douban_marks_on_amazon
-// @namespace	douban_marks_on_amazon v0.1
-// @version		0.1
-// @include		http://www.amazon.cn/*
-// @author		udonmai@gmail.com
-// 2012-02-22	inition
+// @name			douban_marks_on_amazon
+// @namespace			douban_marks_on_amazon
+// @version			0.1
+// @include			http://www.amazon.cn/*
+// author			udonmai@gmail.com
+// 2012-02-22			inition
+// 2012-02-25			Thanks to wong2
 // ==/UserScript==
 
-if(typeof unsafeWindow.jQuery !== "undefined"){
-	var jQuery = unsafeWindow.jQuery;
-	var $ = jQuery;
+var $ = function(selector){
+	return document.querySelectorAll(selector);
 }
 
-$(document).ready(function(){
-	if($('.navCat a.navCatA').text() == "图书"){
-		//遍历目标节点获取isbn
-		for(var i = 0; i <= 10; i ++){
-			if($('div.content b')[i].text() == "ISBN:")
-			var b = $('div.content li')[i];
-			b.find('b').remove();
-			var isbn = b.text();
-			var re = /\,/;//分割第一个逗号前的第一个isbn号
-			isbn = isbn.split(re)[0];
-			
-			break;
-			}
-
-		GM_xmlhttpRequest({
-			method:		'GET',
-			url:		'http://api.douban.com/book/subject/isbn/'+ json +'?alt=json',
-			headers:	{
-							'User-agent':'Mozilla/4.0 (compatible) Greasemonkey',
-						},
-			onload:		function(res){
-							rejson = eval('(' + res.responseText + ')');	
-							if(rejson){
-								var numRator = rejson.gd:rating.@numRator;
-								var average = rejson.gd:rating.@average;
-								var link = rejson.link[1].@href;
-
-								var pos;
-								if(average < 1)
-									pos = 0;
-								else if(average >=1 && average < 2)
-									pos = 1;
-								else if(average >=2 && average < 3)
-									pos = 2;
-								else if(average >=3 && average < 4)
-									pos = 3;
-								else if(average > 4 && average < 5)
-									pos = 4;
-								else if(average >=5 && average < 6)
-									pos = 5;
-								else if(average >=6 && average < 7)
-									pos = 6;
-								else if(average >=7 && average < 8)
-									pos = 7;
-								else if(average >=8 && average < 9)
-									pos = 8;
-								else if(average >=9 && average < 10)
-									pos = 9;
-								else if(average = 10)
-									pos = 10;
-							
-								htmlstr = "<span>豆瓣评分:<span style='background:url(http://img3.douban.com/pics/all_bigstars.gif) no-repeat 0 0;'>"+ average +"&nbsp"+ numRator +"人评价&nbsp<a href='"+ link +"'>链接</a></span>";
-								$('a#productGuarantee').after(htmlstr);
-							}
-							else	
-								return;
-						}
-			});
-		}
-	else 
+!function(){
+	var nav = $('.navCat a.navCatA')[0].text;
+	if(nav !== "图书") {
 		return;
-});
+	}
+
+	var isbn = "";
+
+	var infos = $("div.content b");
+	//遍历目标节点获取isbn
+	for (var i = 0; i <= 10; i++) {
+		var info = infos[i];
+		if (info.textContent == "ISBN:") {
+			isbn = info.nextSibling.data;
+			isbn = isbn.split(",")[0].substring(1);
+			break;
+		}
+	}
+
+	GM_xmlhttpRequest({
+		method:	'GET',
+		url:	'http://api.douban.com/book/subject/isbn' + isbn + '?alt=json',
+		onload:	function(res) {
+			var rejson = JSON.parse(res.responseText);
+			
+			var numRater = rejson['gd:rating']['@numRaters'];
+			var average = rejson['gd:rating']['@average'];
+			var link = rejson['link'][1]['@href'];
+			var emp = $('.buying')[2];
+			
+			var pos;
+			if(average < 1) pos = -151;
+			else if(average >=1 && average < 2) pos = -136;
+			else if(average >=2 && average < 3) pos = -121;
+			else if(average >=3 && average < 4) pos = -106;
+			else if(average >=4 && average < 5) pos = -91;
+			else if(average >=5 && average < 6) pos = -76;
+			else if(average >=6 && average < 7) pos = -61;
+			else if(average >=7 && average < 8) pos = -46;
+			else if(average >=8 && average < 9) pos = -31;
+			else if(average >=9 && average < 10) pos = -16;
+			else if(average = 10) pos = -1;
+
+			var htmlstr = document.createElement("span");
+			htmlstr.innerHTML =  "&nbsp|&nbsp<span style='color:#0C7823; font-weight:700;'>豆瓣</span>评分:<span style='background-image:url(http://img3.douban.com/pics/all_bigstars.gif); background-repeat:no-repeat; background-position:0 "+ pos +"; width:75px;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>";
+			
+			if(numRaters < 10) htmlstr.innerHTML += "<span>&nbsp少于10人评价&nbsp<a href='"+ link +"'>链接</a></span>";
+			else htmlstr.innerHTML += "<span>"+ average +"&nbsp("+ numRaters +"人评价)&nbsp<a href='"+ link +"'>链接</a></span>";
+			
+			emp.appendChild(htmlstr);
+			}
+	});
+}();
