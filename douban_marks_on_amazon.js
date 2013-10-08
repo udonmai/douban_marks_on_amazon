@@ -88,7 +88,7 @@ var $ = function(selector){
 
 		GM_xmlhttpRequest({
 			method: 'GET',
-            url: 	olink,
+			url:	olink,
 			onload: function(res) {
                 //ajax返回的HTML文档实为string类型
                 var el = document.createElement('div');
