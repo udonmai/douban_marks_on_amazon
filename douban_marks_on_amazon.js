@@ -21,7 +21,7 @@ var $ = function(selector){
 	//	return;
 	//}
 
-	var isbn = "";
+    var isbn = "";
     var olink = "";
 
 	var infos = $("div.content b");
