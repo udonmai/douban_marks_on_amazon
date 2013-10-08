@@ -1,11 +1,13 @@
 // ==UserScript==
-// @name			douban_marks_on_amazon
-// @namespace			douban_marks_on_amazon
-// @version			0.1
-// @include			http://www.amazon.cn/*
-// author			udonmai@gmail.com
-// 2012-02-22			inition
-// 2012-02-25			Thanks to wong2
+// @name		douban_marks_on_amazon
+// @namespace		douban_marks_on_amazon
+// @version		0.3
+// @include		http://www.amazon.cn/*
+// author		udonmai@gmail.com
+// 2012-02-22		inition
+// 2012-02-25		Thanks to wong2
+// 2012-02-26           Taking into use
+// 2012-09-16           update with the amazon.cn's update
 // ==/UserScript==
 
 var $ = function(selector){
@@ -13,10 +15,10 @@ var $ = function(selector){
 }
 
 !function(){
-	var nav = $('.navCat a.navCatA')[0].text;
-	if(nav !== "图书") {
-		return;
-	}
+	//var nav = $('.nav-category-button a').text;
+	//if(nav !== "图书") {
+	//	return;
+	//}
 
 	var isbn = "";
 
@@ -33,16 +35,17 @@ var $ = function(selector){
 
 	GM_xmlhttpRequest({
 		method:	'GET',
-		url:	'http://api.douban.com/book/subject/isbn' + isbn + '?alt=json',
+		url:	'http://api.douban.com/book/subject/isbn/' + isbn + '?alt=json',
 		onload:	function(res) {
 			var rejson = JSON.parse(res.responseText);
-			
-			var numRater = rejson['gd:rating']['@numRaters'];
+
+			var numRaters = rejson['gd:rating']['@numRaters'];
 			var average = rejson['gd:rating']['@average'];
 			var link = rejson['link'][1]['@href'];
-			var emp = $('.buying')[2];
-			
-			var pos;
+                        var emp = $('.buying')[2];
+
+                        var pos;
+
 			if(average < 1) pos = -151;
 			else if(average >=1 && average < 2) pos = -136;
 			else if(average >=2 && average < 3) pos = -121;
@@ -55,13 +58,12 @@ var $ = function(selector){
 			else if(average >=9 && average < 10) pos = -16;
 			else if(average = 10) pos = -1;
 
-			var htmlstr = document.createElement("span");
+                        var htmlstr = document.createElement("span");
 			htmlstr.innerHTML =  "&nbsp|&nbsp<span style='color:#0C7823; font-weight:700;'>豆瓣</span>评分:<span style='background-image:url(http://img3.douban.com/pics/all_bigstars.gif); background-repeat:no-repeat; background-position:0 "+ pos +"; width:75px;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>";
-			
-			if(numRaters < 10) htmlstr.innerHTML += "<span>&nbsp少于10人评价&nbsp<a href='"+ link +"'>链接</a></span>";
-			else htmlstr.innerHTML += "<span>"+ average +"&nbsp("+ numRaters +"人评价)&nbsp<a href='"+ link +"'>链接</a></span>";
-			
+
+                        if(numRaters < 10) htmlstr.innerHTML += "<span>&nbsp少于10人评价&nbsp<a href='"+ link +"'>链接</a></span>";
+                        else htmlstr.innerHTML += "<span>"+ average +"&nbsp("+ numRaters +"人评价)&nbsp<a href='"+ link +"'>链接</a></span>";
 			emp.appendChild(htmlstr);
-			}
+		}
 	});
 }();
