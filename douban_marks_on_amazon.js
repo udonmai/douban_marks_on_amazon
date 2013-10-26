@@ -58,7 +58,7 @@ var $ = function (selector) {
                 else if(average >=7 && average < 8) pos = -46;
                 else if(average >=8 && average < 9) pos = -31;
                 else if(average >=9 && average < 10) pos = -16;
-                else if(average = 10) pos = -1;
+                else if(average == 10) pos = -1;
 
                 var htmlstr = document.createElement("span");
                 htmlstr.innerHTML =  "&nbsp|&nbsp<span style='color:#0C7823; font-weight:700;'>豆瓣</span>评分:<span style='background-image:url(http://img3.douban.com/pics/all_bigstars.gif); background-repeat:no-repeat; background-position:0 "+ pos +"; width:75px;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>";
