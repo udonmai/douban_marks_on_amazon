@@ -28,7 +28,7 @@ var $ = function (selector) {
     //遍历目标节点获取isbn
     for (var i = 0; i <= 10; i++) {
         var info = infos[i];
-        if (info.textContent == "ISBN:") {
+        if (info.textContent == "ISBN:" || info.textContent == "条形码:") {
             isbn = info.nextSibling.data;
             isbn = isbn.split(",")[0].substring(1);
             break;
