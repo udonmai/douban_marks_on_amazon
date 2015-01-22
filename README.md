@@ -10,6 +10,7 @@ https://chrome.google.com/webstore/detail/dhdgf...
 - 少数图书在豆瓣没有收录 
 - 部分图书的附属为音像制品，所以也没有评分
 
-http://userscripts.org/scripts/show/126632
+<s>http://userscripts.org/scripts/show/126632<s>
+userscript was down while only mirror left - http://userscripts-mirror.org/scripts/show/126632
 
 截图：![示例图片](http://www.udonmai.com/wp-content/uploads/2012/02/p202453091-1.jpg)
