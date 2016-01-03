@@ -2,8 +2,8 @@ Just another userscript
 
 **13-10-08 更新支持电子书页面 :)
 
-*最近amazon.cn进行了改版，所以脚本也随之更新了，如果发现不能正常工作，请更新脚本。Chrome最近也无法直接安装了，需要事前安装一个插件
-https://chrome.google.com/webstore/detail/dhdgf...
+*最近amazon.cn进行了改版，所以脚本也随之更新了，如果发现不能正常工作，请更新脚本。Chrome最近也无法直接安装了，需要事前安装一个Tampermonkey插件
+https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo
 
 - 用于amazon.cn
 - 仅在图书部分发动 
